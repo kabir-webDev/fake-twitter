@@ -6,12 +6,16 @@ const childrenRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/users',
+    redirectTo: '/tweets',
+  },
+  {
+    path: 'tweets',
+    loadChildren: () => import('./tweets/tweets.module').then((m) => m.TweetsModule),
   },
   {
     path: 'users',
     loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
-  }
+  },
   // {
   //   path: '**',
   //   loadChildren: () =>

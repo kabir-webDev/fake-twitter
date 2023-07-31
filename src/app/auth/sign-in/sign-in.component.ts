@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in',
@@ -7,21 +8,35 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent {
-  email!: string;
-  password!: string;
+  loginForm: FormGroup; // Declare loginForm as FormGroup
+  submitted = false;
 
-  constructor(private loginService: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private loginService: AuthService) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
+
+  get formControls() {
+    return this.loginForm.controls;
+  }
 
   onSubmit() {
-    // Call the login service here
-    this.loginService.login({email:this.email, password:this.password})
+    this.submitted = true;
+    console.log(this.loginForm.value);
+    
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    // this.loginService.login({email: this.loginForm.value.email, password: this.loginForm.value.password})
+    this.loginService.login({email: 'kabir.webdev@gmail.com', password: 'inthelangs175'})
       .subscribe(
         (response) => {
-          // Handle successful login (e.g., redirect to a new page)
-          console.log('Login successful!');
+          console.log('Login successful!', response);
         },
         (error) => {
-          // Handle login error (e.g., show an error message)
           console.error('Login failed:', error);
         }
       );

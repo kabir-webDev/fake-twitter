@@ -8,6 +8,12 @@ interface LoginPayload {
   email: string,
   password: string
 }
+
+interface SignUpPayload {
+  email: string,
+  password: string
+}
+
 interface UserModel {
   username: string;
   firstName: string;
@@ -31,63 +37,28 @@ export class AuthService {
   // API Call
   login(payload: LoginPayload): Observable<any> {
     return this.http
-      .authPost('login', payload, {
-        grant_type: 'password',
-        token_type: 'regular',
-      })
+      .authPost('login', payload)
       .pipe(
         map((res: any) => {
-          const access_token = res?.data?.access_token;
-          const refresh_token = res?.data?.refresh_token;
-          this.requester.loadUserData({ access_token, refresh_token });
+          const access_token = res?.token;
+          this.requester.loadUserData({ access_token });
           localStorage.setItem('access_token', access_token);
-          localStorage.setItem('refresh_token', refresh_token);
           return res;
         })
       );
   }
-
-  // changePassword(payload: any): Observable<any> {
-  //   const userId: string = this.requester.userDataSnapshot?.userData?.user_id;
-  //   return this.http.put(Utils.formatUrlString(endpoints.CHANGE_PASSWORD, userId), payload)
-  // }
-
-  resetPassword(payload: any): Observable<any> {
-    let query = {
-      action: 'reset_password',
-    };
-    return this.http.authPut('user', payload, query);
-  }
-
-  changePassword(payload: any): Observable<any> {
-    let query = {
-      action: 'reset_password',
-    };    
-    return this.http.authPut('user', payload, query);
-  }
-
-  // sendOpt(email: string): Observable<any> {
-  //   const qp = {
-  //     action: 'forgot_password',
-  //     media: email,
-  //   };
-  //   return this.http.authPut(endpoints.FORGOT_PASSWORD, {}, qp);
-  // }
-  // validateOpt(email: string, opt: any): Observable<any> {
-  //   const qp = {
-  //     otp: opt,
-  //     email: email,
-  //   };
-  //   return this.http.authGet(endpoints.OTP, qp);
-  // }
-
-  // for SSO
-
-  getAuthInfo(): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    };
-    return this.http.authGet('user/auth/sso', httpOptions);
+  
+  signup(payload: SignUpPayload): Observable<any> {
+    console.log('payload:',payload);
+    
+    return this.http
+      .authPost('signup', payload)
+      .pipe(
+        map((res: any) => {
+          console.log(res);
+          return res;
+        })
+      );
   }
 
   sendUserData(code: any): Observable<any> {
@@ -106,7 +77,7 @@ export class AuthService {
         map((res: any) => {
           const access_token = res?.data?.access_token;
           const refresh_token = res?.data?.refresh_token;
-          this.requester.loadUserData({ access_token, refresh_token });
+          this.requester.loadUserData({ access_token });
           localStorage.setItem('access_token', access_token);
           localStorage.setItem('refresh_token', refresh_token);
           return res;

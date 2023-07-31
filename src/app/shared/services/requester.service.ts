@@ -11,35 +11,41 @@ import { LocalStorageService } from 'ngx-webstorage';
 
 const ACCESS_TOKEN = 'access_token';
 const REFRESH_TOKEN = 'refresh_token';
-const KC_REQUESTER = "kc-requester";
+const KC_REQUESTER = 'kc-requester';
 
 interface LoginData {
   access_token: string;
-  refresh_token: string
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequesterService {
+  private tokenExpirationTime!: number;
 
   private _userDataSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   userData$: Observable<any> = this._userDataSubject.asObservable();
 
   timeoutId: any;
 
-  constructor(private router: Router, private snackbar: MatSnackBar, private http: HttpService,
-    // private $localStorage: LocalStorageService,
+  constructor(
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private http: HttpService
+  ) // private $localStorage: LocalStorageService,
+  {
+    if (
+      localStorage.getItem(ACCESS_TOKEN) &&
+      localStorage.getItem(REFRESH_TOKEN)
     ) {
-    if (localStorage.getItem(ACCESS_TOKEN) && localStorage.getItem(REFRESH_TOKEN)) {
-      const access_token = (<string>localStorage.getItem(ACCESS_TOKEN));
-      const refresh_token = (<string>localStorage.getItem(REFRESH_TOKEN));
-      this.loadUserData({ access_token, refresh_token })
+      const access_token = <string>localStorage.getItem(ACCESS_TOKEN);
+      const refresh_token = <string>localStorage.getItem(REFRESH_TOKEN);
+      this.loadUserData({ access_token });
     }
   }
 
   get() {
-    return this._userDataSubject.value
+    return this._userDataSubject.value;
   }
 
   // save(user) {
@@ -65,14 +71,33 @@ export class RequesterService {
   loadUserData(data: LoginData): void {
     this._userDataSubject.next({
       access_token: data.access_token,
-      refresh_token: data.refresh_token,
-      userData: this.getUserDataFromToken(data.access_token)
+      userData: this.getUserDataFromToken(data.access_token),
     });
-    if (data?.refresh_token) {
-      this.tokenExpireSetTimeout()
-    }
+    const decoded: any = jwtDecode(data.access_token);
+    // const exp = Date.parse(decoded?.exp)
+    this.tokenExpirationTime = decoded.exp;
+    let date = new Date(decoded?.exp);
+    let firstDate = date.toLocaleString('en-us', {
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    });
+    console.log('-----validity::', firstDate);
+
+    // if (data?.refresh_token) {
+    //   this.tokenExpireSetTimeout()
+    // }
   }
 
+  setTokenExpirationTime(expirationTime: number) {
+    this.tokenExpirationTime = expirationTime;
+  }
+
+  // Function to check if the token is still valid
+  isTokenValid(): boolean {
+    const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to Unix timestamp
+    return this.tokenExpirationTime > currentTimestamp;
+  }
 
   get userDataSnapshot(): any {
     return this._userDataSubject.value;
@@ -84,70 +109,74 @@ export class RequesterService {
     localStorage.removeItem(KC_REQUESTER);
     this._userDataSubject.next(null);
     if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
+      clearTimeout(this.timeoutId);
     }
-    this.router.navigate(['/auth/login'])
+    this.router.navigate(['/auth/login']);
   }
 
   get isAuthenticated(): boolean {
-    const access_token = this._userDataSubject.value?.access_token;
-    
+    const access_token = localStorage.getItem('access_token');
+
     if (!access_token) {
-      return false
+      return false;
     }
-    return this.isAuthTokenValid(access_token)
+    
+    return this.isAuthTokenValid(access_token);
   }
 
-  isAuthTokenValid(accessToken: string, _reduceExpiredSeconds: number = 0): boolean {
+  isAuthTokenValid( accessToken: string): boolean {
     const decoded: any = jwtDecode(accessToken);
-    // const millisecond= Date.parse(decoded?.ExpiresAt)
-    const expMilSecond: number = (Date.parse(decoded?.ExpiresAt)) - Math.floor(1000 * _reduceExpiredSeconds); // milliseconds
-    const currentTime = Date.now(); // milliseconds
-    return expMilSecond > currentTime;
+    this.tokenExpirationTime = decoded.exp;
+    const currentTimestamp = Math.floor(Date.now() / 1000);     
+    return this.tokenExpirationTime > currentTimestamp;
   }
 
   getUserDataFromToken(token: string): any {
-    const decoded: any = jwtDecode(token);    
-    return decoded
+    const decoded: any = jwtDecode(token);
+    return decoded;
   }
 
   get getUserCompanyId(): string {
-    return this._userDataSubject.value?.userData?.companyId
+    return this._userDataSubject.value?.userData?.companyId;
   }
 
   getTokenExpireTime(token: string): any {
     const decoded: any = jwtDecode(token);
-    const unixTimestamp = moment(decoded?.ExpiresAt, 'YYYY-MM-DD HH:mm:ss.SSS').unix();
+    const unixTimestamp = moment(
+      decoded?.ExpiresAt,
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    ).unix();
     return unixTimestamp;
   }
 
   tokenExpireSetTimeout(): void {
     if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
+      clearTimeout(this.timeoutId);
     }
     const refreshToken = this._userDataSubject.value?.refresh_token;
     const accessToken = this._userDataSubject.value?.access_token;
     if (refreshToken) {
       const expireTimeForAccessToken = this.getTokenExpireTime(accessToken);
-      const duration = (expireTimeForAccessToken * 1000) - new Date().getTime();
+      const duration = expireTimeForAccessToken * 1000 - new Date().getTime();
       this.timeoutId = setTimeout(() => {
         this.getNewByRefreshToken().subscribe();
-      }, duration)
+      }, duration);
     }
   }
 
   get isSuperAdmin(): boolean {
-    return this.userDataSnapshot?.userData?.role === "SUPER_ADMIN"
+    return this.userDataSnapshot?.userData?.role === 'SUPER_ADMIN';
   }
 
   get isAdmin(): boolean {
-    return this.userDataSnapshot?.userData?.role === "ADMIN"
+    return this.userDataSnapshot?.userData?.role === 'ADMIN';
   }
 
   hasAnyAuthority(authorities: string[] | string): boolean {
     const currentUser = this.userDataSnapshot;
-    const _authorities: string[] = typeof authorities === "string" ? [authorities] : authorities
-    return _authorities.some(r => currentUser.authorities.includes(r));
+    const _authorities: string[] =
+      typeof authorities === 'string' ? [authorities] : authorities;
+    return _authorities.some((r) => currentUser.authorities.includes(r));
   }
 
   // API
@@ -155,23 +184,33 @@ export class RequesterService {
     const refresh_token = this.userDataSnapshot?.refresh_token;
     const expireTime = this.getTokenExpireTime(refresh_token);
 
-    if (new Date().getTime() > (expireTime * 1000)) {
-      this.snackbar.open('Your session has been expired! Please Sign In Again.', "close", { duration: 5000 });
+    if (new Date().getTime() > expireTime * 1000) {
+      this.snackbar.open(
+        'Your session has been expired! Please Sign In Again.',
+        'close',
+        { duration: 5000 }
+      );
       this.logout();
-      return of(false)
+      return of(false);
     }
 
-    return this.http.authPost(endpoints.REFRESH_TOKEN, {
-      refresh_token: refresh_token
-    }, { grant_type: 'refresh_token' }).pipe(
-      map((res: any) => {
-        const access_token = res?.data?.access_token;
-        const refresh_token = res?.data?.refresh_token;
-        this.loadUserData({ access_token, refresh_token });
-        localStorage.setItem(ACCESS_TOKEN, access_token);
-        localStorage.setItem(REFRESH_TOKEN, refresh_token);
-        return res
-      })
-    )
+    return this.http
+      .authPost(
+        endpoints.REFRESH_TOKEN,
+        {
+          refresh_token: refresh_token,
+        },
+        { grant_type: 'refresh_token' }
+      )
+      .pipe(
+        map((res: any) => {
+          const access_token = res?.data?.access_token;
+          const refresh_token = res?.data?.refresh_token;
+          this.loadUserData({ access_token });
+          localStorage.setItem(ACCESS_TOKEN, access_token);
+          localStorage.setItem(REFRESH_TOKEN, refresh_token);
+          return res;
+        })
+      );
   }
 }

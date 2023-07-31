@@ -18,7 +18,7 @@ export class AuthGuard  {
     }
 
     const userData: any = jwtDecode(this.requester?.userDataSnapshot?.access_token);
-
+    
     // if (userData?.userIsActive === false) {
     //   this.router.navigate(['/verify-email']);
     //   return false;
