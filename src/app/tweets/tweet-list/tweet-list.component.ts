@@ -18,7 +18,6 @@ export class TweetListComponent implements OnInit {
   getMyTweets(): void {
     this.tweetService.getMyTweets().subscribe({
       next: (res) => {
-        console.log('User Response:', res);
       },
       error: (err) => {
         console.log('Error:', err);

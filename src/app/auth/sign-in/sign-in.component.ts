@@ -37,7 +37,6 @@ export class SignInComponent {
   onSubmit() {
     this.submitted = true;
     this.isSubmitting = true;
-    console.log(this.loginForm.value);
     
     if (this.loginForm.invalid) {
       return;
@@ -46,7 +45,6 @@ export class SignInComponent {
     this.loginService.login({email: this.loginForm.value.email, password: this.loginForm.value.password})
       .subscribe(
         (response) => {
-          console.log('Login successful!', response);
           this.isSubmitting = false;
           this.router.navigate(['/tweets']);
         },

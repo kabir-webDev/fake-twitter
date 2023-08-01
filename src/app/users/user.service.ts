@@ -21,8 +21,24 @@ export class UserService {
     return throwError(`${error.error.message}`);
   }
 
-  getAllUsers(): Observable<any> {
+  getAllUsers(page:number): Observable<any> {
     // return this.http.get(this.baseUrl + 'users?page=5&size=30')
-    return this.httpService.get('users?page=5&size=30','');
+    let queryParam = {page, size:30}
+    return this.httpService.get('users',queryParam);
+  }
+  getTweetsByUserId(id:number): Observable<any> {
+    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
+    // let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/tweets');
+  }
+  getFollowingsByUserId(id:number): Observable<any> {
+    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
+    // let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/following');
+  }
+  getFollowersByUserId(id:number): Observable<any> {
+    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
+    // let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/followers');
   }
 }

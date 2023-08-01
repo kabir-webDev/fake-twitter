@@ -49,13 +49,11 @@ export class AuthService {
   }
   
   signup(payload: SignUpPayload): Observable<any> {
-    console.log('payload:',payload);
     
     return this.http
       .authPost('signup', payload)
       .pipe(
         map((res: any) => {
-          console.log(res);
           return res;
         })
       );

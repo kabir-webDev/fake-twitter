@@ -31,7 +31,6 @@ export class SignUpComponent {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.loginForm.value);
 
     if (this.loginForm.invalid) {
       return;
@@ -45,7 +44,6 @@ export class SignUpComponent {
       .signup(payload)
       .subscribe(
         (response) => {
-          console.log('Signup successful!', response);
           this.router.navigate(['/auth/login']);
         },
         (error) => {

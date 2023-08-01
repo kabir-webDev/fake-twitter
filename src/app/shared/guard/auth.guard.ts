@@ -12,7 +12,6 @@ export class AuthGuard {
   constructor(private requester: RequesterService, private router: Router, private snackbar: MatSnackBar) { }
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('this.requester?.isAuthenticated', this.requester?.isAuthenticated);
 
     if (!this.requester?.isAuthenticated) {
       this.requester.logout();

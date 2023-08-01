@@ -22,7 +22,6 @@ export class HttpClientInterceptor implements HttpInterceptor {
     const accessToken = localStorage.getItem('access_token');
     
     if (accessToken) {
-      console.log(';;;',this.requester.isAuthTokenValid(accessToken));
       
       if (this.requester.isAuthTokenValid(accessToken)) {
         return next.handle(request.clone({

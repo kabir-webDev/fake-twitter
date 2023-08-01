@@ -82,7 +82,6 @@ export class RequesterService {
       day: 'numeric',
       weekday: 'long',
     });
-    console.log('-----validity::', firstDate);
 
     // if (data?.refresh_token) {
     //   this.tokenExpireSetTimeout()
@@ -115,7 +114,6 @@ export class RequesterService {
   get isAuthenticated(): boolean {
     const access_token = localStorage.getItem('access_token');
 
-    console.log('[[]]]',access_token);
     if (!access_token) {
       return false;
     }

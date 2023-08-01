@@ -1,0 +1,40 @@
+/* search-input.component.css */
+
+.search-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px 40px 10px 40px; /* Adjust padding to make space for icons */
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    outline: none;
+    background-color: #EFF3F4; /* Add a background color */
+    border: 1px solid white;
+    // transition: border 0.3s; /* Add a transition for the border */
+  }
+  
+  input:focus {
+    border: 1px solid #349BF0; /* Add border when input is focused */
+  }
+  
+  .search-icon,
+  .clear-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888; /* Customize the color of icons */
+  }
+  
+  .search-icon {
+    left: 15px;
+  }
+  
+  .clear-icon {
+    right: 15px;
+  }
+  

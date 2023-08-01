@@ -20,10 +20,8 @@ export class TweetFormComponent {
     const payload = {
       content: this.content
     };
-    console.log('Responsev1:',payload);
     this.tweetService.makeTweet(payload).subscribe(
       (response) => {
-        console.log('Response:', response);
       },
       (error) => {
         console.error('Error:', error);

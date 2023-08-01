@@ -1,0 +1,7 @@
+<div class="search-container mt-1 min-w-[700px]">
+    <mat-icon class="search-icon " [ngClass]="isFocused ? '!text-blue-400' : '' ">search</mat-icon>
+    <input type="text" placeholder="Search Twitter" [(ngModel)]="searchQuery" (input)="onInputChange()"
+        (keyup.enter)="onSearch()" (blur)="onBlur()" (focus)="onFocus()" />
+    <mat-icon class="clear-icon !bg-[#349BF0] !text-white rounded-full text-base text-center" *ngIf="searchQuery"
+        (click)="onClear()">clear</mat-icon>
+</div>

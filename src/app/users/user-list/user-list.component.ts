@@ -9,37 +9,39 @@ import { UserService } from '../user.service';
 })
 export class UserListComponent implements OnInit {
   currentUserData: any;
+  pageCount: number = 0;
+  isLoading!: boolean;
+  userList: any[] = []; // Initialize userList as an empty array
   constructor(
     private requesterService: RequesterService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.currentUserData = this.requesterService.userDataSnapshot?.userData;
+    // this.currentUserData = this.requesterService.userDataSnapshot?.userData;
     this.getUsers();
   }
 
   getUsers(): void {
-    this.userService.getAllUsers().subscribe({
+    this.isLoading = true;
+    this.userService.getAllUsers(this.pageCount).subscribe({
       next: (res) => {
-        console.log('User Response:', res);
+        this.userList = [...this.userList, ...res.users];
 
-        // this.dataSource = new MatTableDataSource( this.userList || []);
-        // this.dataSource = this.userList;
-        // this.ref.detectChanges();
-        // this.dataSource.paginator = this.paginator;
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.log('Error:', err);
-
-        // this.showData = false;
-        // this.isLoading = false;
-        // this.snackbar.open(
-        //   err?.error?.message || 'Something went wrong on fetching user!',
-        //   'Close',
-        //   { duration: 5000, panelClass: ['snackbar-dark'] }
-        // );
       },
     });
+  }
+  storeUser(user:any){
+    console.log('user',user);
+    localStorage.setItem('user_info',JSON.stringify(user));
+  }
+  onScroll() {
+    this.pageCount++;
+    this.getUsers();
   }
 }

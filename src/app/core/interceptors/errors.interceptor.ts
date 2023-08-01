@@ -21,7 +21,6 @@ export class ErrorsInterceptor implements HttpInterceptor {
 
   private errorHandler(response: any): Observable<any> {
     if (!environment.production) {
-      console.log('errorHandler Response', response);
     }
     const status = response.status
     if (status === 401 || status === 403) {
