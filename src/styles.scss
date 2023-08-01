@@ -3,5 +3,46 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.twitter-form-field {
+  @apply w-full;
+
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-flex {
+      padding: 0 16px;
+    }
+
+    .mat-form-field-outline-thick .mat-form-field-outline-start,
+    .mat-form-field-outline-thick .mat-form-field-outline-end,
+    .mat-form-field-outline-thick .mat-form-field-outline-gap {
+      border-width: 1px;
+    }
+  }
+}
+
+.ft-progress-bar {
+  .mat-progress-bar-fill::after {
+    @apply bg-[#ec0e94];
+  }
+}
+
+.ft-progress-bar {
+  .mat-progress-bar-buffer {
+    @apply bg-white;
+  }
+}
+
+.ft-progress-bar {
+  .mat-progress-bar {
+    @apply rounded-full;
+  }
+}

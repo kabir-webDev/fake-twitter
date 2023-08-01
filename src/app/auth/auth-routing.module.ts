@@ -13,7 +13,7 @@ const routes: Routes = [
     // }
   },
   {
-    path: 'signup',
+    path: 'sign-up',
     component: SignUpComponent,
     // data: {
     //   title: 'Sign up',

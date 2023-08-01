@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,10 +11,12 @@ import { AuthService } from '../auth.service';
 export class SignUpComponent {
   loginForm: FormGroup; // Declare loginForm as FormGroup
   submitted = false;
+  visible: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginService: AuthService
+    private loginService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
@@ -38,12 +41,12 @@ export class SignUpComponent {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
-    // this.loginService.login()
     this.loginService
       .signup(payload)
       .subscribe(
         (response) => {
           console.log('Signup successful!', response);
+          this.router.navigate(['/auth/login']);
         },
         (error) => {
           console.error('Signup failed:', error);

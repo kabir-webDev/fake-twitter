@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TweetListComponent } from './tweet-list/tweet-list.component';
+import { AuthGuard } from '../shared/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
       title: 'Tweets',
       toolbarTitle: 'Fake Twitter',
     },
+    canActivate: [AuthGuard],
   },
 ];
 

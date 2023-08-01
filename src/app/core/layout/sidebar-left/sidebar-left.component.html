@@ -1,1 +1,37 @@
-<p>sidebar-left works!</p>
+<div class="w-64 h-[100vh] flex flex-col justify-between">
+    <div>
+    <div
+        class="rounded-full bg-white hover:bg-[#e6e8e9] w-14 h-14 flex justify-center items-center cursor-pointer duration-200">
+        <img src="assets/images/x.png" alt="" width="30" height="30">
+    </div>
+    <!-- <div >
+
+    </div> -->
+    <div class="flex items-center cursor-pointer duration-200 text-xl gap-5" *ngFor="let item of sidebarList">
+        <h1 class="rounded-[50px] bg-white hover:bg-[#e6e8e9] pl-3 py-3 pr-8  flex items-center gap-4 text-[#0F1419] my-1">
+            <mat-icon>{{item.icon}}_outline</mat-icon> {{item.name}}
+        </h1>
+    </div>
+    <button class="w-[235px] text-center py-3 bg-[#349BF0] hover:bg-[#308DD8] text-lg text-white rounded-full mt-2 font-medium hover:duration-200">Tweet</button>
+
+</div>
+<mat-menu #menu="matMenu" class="ml-2 w-[230px] ]">
+    <button mat-menu-item> <span class="!font-medium">Add an existing account</span></button>
+    <button mat-menu-item (click)="logout()"> <span class="!font-medium">Log out @kabir_webdev</span></button>
+  </mat-menu>
+    <div class="flex items-center justify-between px-3 py-2 bg-white hover:bg-[#e6e8e9] rounded-[50px] duration-200 mr-2 mb-2 gap-2 cursor-pointer"
+    mat-button [matMenuTriggerFor]="menu"
+    >
+        <img
+        class="card-image1"
+        mat-card-image
+        src="https://media.licdn.com/dms/image/D5603AQFZqTKKT9CY1w/profile-displayphoto-shrink_800_800/0/1688377291923?e=1696464000&v=beta&t=EC31JLm6BDcMQDwnndHQ8GSu9Alyee8pXmjzVL-uQdE"
+        alt="Photo of a Shiba Inu"
+      />
+      <div>
+        <p>Javascript Dev.</p>
+        <p class="text-gray-500">@kabir_webdev</p>
+      </div>
+      <mat-icon>more_horiz</mat-icon>
+    </div>
+</div>

@@ -105,8 +105,6 @@ export class RequesterService {
 
   logout(): void {
     localStorage.removeItem(ACCESS_TOKEN);
-    localStorage.removeItem(REFRESH_TOKEN);
-    localStorage.removeItem(KC_REQUESTER);
     this._userDataSubject.next(null);
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
@@ -117,6 +115,7 @@ export class RequesterService {
   get isAuthenticated(): boolean {
     const access_token = localStorage.getItem('access_token');
 
+    console.log('[[]]]',access_token);
     if (!access_token) {
       return false;
     }

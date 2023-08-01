@@ -8,31 +8,22 @@ import jwtDecode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard  {
+export class AuthGuard {
   constructor(private requester: RequesterService, private router: Router, private snackbar: MatSnackBar) { }
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.requester?.isAuthenticated) {      
+    console.log('this.requester?.isAuthenticated', this.requester?.isAuthenticated);
+
+    if (!this.requester?.isAuthenticated) {
+      this.requester.logout();
       this.router.navigate(['/auth/login']);
+      this.snackbar.open("You are not permitted to access this resources!", "Close", {
+        duration: 80000
+      })
       return false;
+    } else {
+      return true;
     }
-
-    const userData: any = jwtDecode(this.requester?.userDataSnapshot?.access_token);
-    
-    // if (userData?.userIsActive === false) {
-    //   this.router.navigate(['/verify-email']);
-    //   return false;
-    // }
-
-    if (['OPERATOR', 'ADMIN', 'VIEWER'].includes(userData?.Role)) {
-      return true
-    }
-
-    this.requester.logout();
-    this.snackbar.open("You are not permitted to access this resources!", "Close", {
-      duration: 80000
-    })
-    return false
   }
 
 }
