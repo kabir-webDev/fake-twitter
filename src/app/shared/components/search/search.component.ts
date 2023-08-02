@@ -52,8 +52,8 @@ export class SearchComponent implements OnInit {
       this.isLoading = true;
       this.searchUserService.searchUser({ token: this.searchQuery }).subscribe({
         next: (res) => {
-          console.log('Search Response:', res);
           this.userList = res.search_results;
+          console.log('Search Response:', this.userList);
           this.isLoading = false;
         },
         error: (err) => {
@@ -81,5 +81,9 @@ export class SearchComponent implements OnInit {
     // Perform any actions when the input gains focus
     this.isFocused = true;
     console.log('Input focused');
+  }
+  storeUser(user:any){
+    // console.log('user',user);
+    localStorage.setItem('user_info',JSON.stringify(user));
   }
 }

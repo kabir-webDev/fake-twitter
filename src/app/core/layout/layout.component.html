@@ -33,21 +33,38 @@
     <img src="path_to_your_close_icon_image" alt="Close">
   </button>
    -->
-<div class="fixed bg-green-200 flex justify-around items-center w-full h-[100px] z-50">
-    <div class=" flex justify-around items-center w-full" *ngFor="let item of sidebarList"  >
-        <div>
-            <mat-icon [routerlink]="item.link">{{item.icon}}</mat-icon>
+<div class="fixed lg:hidden bg-green-200 flex justify-around items-center w-full h-[100px] z-50">
+    <div class=" flex justify-around items-center w-full" *ngFor="let item of sidebarList">
+        <div [routerLink]="item.link">
+
+            <mat-icon>{{item.icon}}</mat-icon>
         </div>
+        
     </div>
+    <!-- <mat-menu #menu="matMenu" class="ml-2 w-[230px]">
+        <button mat-menu-item>
+            <h1 class="!font-medium" routerLink="/my-profile">Go To Profile</h1>
+        </button>
+        <button mat-menu-item (click)="logout()"> <span class="!font-medium">Log out</span></button>
+    </mat-menu>
+    <div class="flex items-center justify-between px-3 py-2 bg-transparent hover:bg-[#e6e8e9] rounded-[50px] duration-200 mr-2 mb-2 gap-2 cursor-pointer"
+        mat-button [matMenuTriggerFor]="menu">
+        <img class="card-image1" mat-card-image src="https://img.freepik.com/free-icon/user_318-159711.jpg"
+            alt="Photo of a Shiba Inu" width="50" height="50"/>
+    </div> -->
 </div>
 
 
 <div class="flex relative">
     <div class="hidden w-1/3 h-full lg:flex lg:justify-end border-r">
-        <app-sidebar-left class="sticky top-0"></app-sidebar-left>
+        <app-sidebar-left class="fixed"></app-sidebar-left>
     </div>
-    <div class="min-w-[700px] mt-[100px] lg-mt-0 min-h-[100vh] px-auto border-x-[2px]">
-        <router-outlet></router-outlet>
+    <div class="min-w-[500px] sm:min-w-[600px] md:min-w-[700px] lg:min-w-[750px] mt-[100px] lg:mt-0 min-h-[100vh] px-auto border-x-[2px]">
+
+        <div *ngIf="routeData?.toolbarTitle"
+            class="text-xl  text-[#349BF0] text-center fixed bg-white py-3 z-40 min-w-[495px] sm:min-w-[595px] md:min-w-[695px] lg:min-w-[745px]"><b class="pl-5">{{ routeData?.toolbarTitle
+                }}</b></div>
+        <router-outlet class="mt-6"></router-outlet>
     </div>
 
     <div class="hidden w-1/3 lg:flex lg:justify-start border-l">

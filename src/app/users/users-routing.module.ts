@@ -11,7 +11,7 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'Users',
-      toolbarTitle: 'Fake Twitter',
+      toolbarTitle: 'Users List',
     },
     canActivate: [AuthGuard],
   },
@@ -21,7 +21,7 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'User Details',
-      toolbarTitle: 'Fake Twitter',
+      toolbarTitle: 'Users Details',
     },
     canActivate: [AuthGuard],
   }

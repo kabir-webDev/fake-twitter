@@ -10,7 +10,7 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'Tweets',
-      toolbarTitle: 'Fake Twitter',
+      toolbarTitle: 'Timeline',
     },
     canActivate: [AuthGuard],
   },
