@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RequesterService } from 'src/app/shared/services/requester.service';
 import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-list',
@@ -11,14 +12,14 @@ export class UserListComponent implements OnInit {
   currentUserData: any;
   pageCount: number = 1;
   isLoading!: boolean;
-  userList: any[] = []; // Initialize userList as an empty array
+  userList: any[] = [];
   constructor(
     private requesterService: RequesterService,
-    private userService: UserService
+    private userService: UserService,
+    private snackbar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
-    // this.currentUserData = this.requesterService.userDataSnapshot?.userData;
     this.getUsers();
   }
 
@@ -27,18 +28,18 @@ export class UserListComponent implements OnInit {
     this.userService.getAllUsers(this.pageCount).subscribe({
       next: (res) => {
         this.userList = [...this.userList, ...res.users];
-
         this.isLoading = false;
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
+        this.snackbar.open(err, "Close", {
+          duration: 3000,
+        })
       },
     });
   }
-  storeUser(user:any){
-    console.log('user',user);
-    localStorage.setItem('user_info',JSON.stringify(user));
+  storeUser(user: any) {
+    localStorage.setItem('user_info', JSON.stringify(user));
   }
   onScroll() {
     this.pageCount++;

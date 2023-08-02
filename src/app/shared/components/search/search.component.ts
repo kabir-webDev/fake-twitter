@@ -14,13 +14,10 @@ export class SearchComponent implements OnInit {
   isLoading!: boolean;
   userList = [];
   constructor(
-    private requesterService: RequesterService,
     private searchUserService: SearchService
   ) { }
 
   ngOnInit(): void {
-    // this.currentUserData = this.requesterService.userDataSnapshot?.userData;
-    // this.getUsers();
   }
 
   getUsers(): void {
@@ -33,13 +30,11 @@ export class SearchComponent implements OnInit {
       this.isLoading = true;
       this.searchUserService.searchUser({ token: this.searchQuery }).subscribe({
         next: (res) => {
-          console.log('Search Response:', res);
           this.userList = res.search_results;
           this.isLoading = false;
         },
         error: (err) => {
           this.isLoading = false;
-          console.log('Error:', err);
         },
       });
     }else{
@@ -53,12 +48,10 @@ export class SearchComponent implements OnInit {
       this.searchUserService.searchUser({ token: this.searchQuery }).subscribe({
         next: (res) => {
           this.userList = res.search_results;
-          console.log('Search Response:', this.userList);
           this.isLoading = false;
         },
         error: (err) => {
           this.isLoading = false;
-          console.log('Error:', err);
         },
       });
     }else{
@@ -67,7 +60,6 @@ export class SearchComponent implements OnInit {
   }
 
   onClear() {
-    console.log('Searching for:', this.searchQuery);
     this.searchQuery = '';
     this.userList = [];
   }
@@ -78,12 +70,9 @@ export class SearchComponent implements OnInit {
     }
   }
   onFocus() {
-    // Perform any actions when the input gains focus
     this.isFocused = true;
-    console.log('Input focused');
   }
   storeUser(user:any){
-    // console.log('user',user);
     localStorage.setItem('user_info',JSON.stringify(user));
   }
 }

@@ -22,24 +22,20 @@ export class UserService {
   }
 
   getAllUsers(page:number): Observable<any> {
-    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
     let queryParam = {page, size:30}
     return this.httpService.get('users',queryParam);
   }
-  getTweetsByUserId(id:number): Observable<any> {
-    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
-    // let queryParam = {page, size:30}
-    return this.httpService.get('users/'+id+'/tweets');
+  getTweetsByUserId(id:number, page:number): Observable<any> {
+    let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/tweets', queryParam);
   }
-  getFollowingsByUserId(id:number): Observable<any> {
-    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
-    // let queryParam = {page, size:30}
-    return this.httpService.get('users/'+id+'/following?page=1&size=30');
+  getFollowingsByUserId(id:number, page:number): Observable<any> {
+    let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/following',queryParam);
   }
-  getFollowersByUserId(id:number): Observable<any> {
-    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
-    // let queryParam = {page, size:30}
-    return this.httpService.get('users/'+id+'/followers');
+  getFollowersByUserId(id:number, page:number): Observable<any> {
+    let queryParam = {page, size:30}
+    return this.httpService.get('users/'+id+'/followers',queryParam);
   }
   followUser(id:number): Observable<any> {
     const payload = {

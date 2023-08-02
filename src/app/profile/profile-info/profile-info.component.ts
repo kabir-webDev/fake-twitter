@@ -21,6 +21,10 @@ export class ProfileInfoComponent  implements OnInit {
   followingList: any[] =[];
   followerList: any[] =[];
   myInfo: any;
+  tweetsPageCount: number = 1;
+  followingsPageCount: number = 1;
+  followersPageCount: number = 1;
+  activeTab: string = 'Tweets';
   constructor(
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
@@ -35,104 +39,115 @@ export class ProfileInfoComponent  implements OnInit {
     if (myData) {
       this.myInfo = jwtDecode(myData);
     }
-    console.log('this.myInfo',this.myInfo.id);
     
     
 
   }
 
   ngOnInit(): void {
-    // this.currentUserData = this.requesterService.userDataSnapshot?.userData;
-    // this.getUsers();
     this.getTweetsByUserId();
-    this.getFollowingsByUserId();
-    this.getFollowersByUserId();
+  }
+
+  onTabChange(event: any) {
+    this.activeTab = event.tab.textLabel;
+    this.tweetsPageCount = 1;
+    this.followingsPageCount = 1;
+    this.followersPageCount = 1;
+    this.tweetList = [];
+    this.followingList = [];
+    this.followerList = [];
+    this.activeTab === 'Tweets' && this.getTweetsByUserId();
+    this.activeTab === 'Followings' && this.getFollowingsByUserId();
+    this.activeTab === 'Followers' && this.getFollowersByUserId();
   }
 
   getTweetsByUserId(): void {
     this.isLoading = true;
 
-    this.profile.getTweetsByUserId(this.myInfo.id).subscribe({
+    this.profile.getTweetsByUserId(this.myInfo.id, this.tweetsPageCount).subscribe({
       next: (res) => {
-        this.tweetList = res.tweets;
+        // this.tweetList = res.tweets;
+        this.tweetList = [...this.tweetList, ...res.tweets];
         this.isLoading = false;
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
       },
     });
   }
   getFollowingsByUserId(): void {
     this.isLoading = true;
 
-    this.profile.getFollowingsByUserId(this.myInfo.id).subscribe({
+    this.profile.getFollowingsByUserId(this.myInfo.id, this.followingsPageCount).subscribe({
       next: (res) => {
-        this.followingList = res.followings;
+        this.followingList = [...this.followingList, ...res.followings];
         this.isLoading = false;
-        console.log('this.followingList',this.followingList);
-        
+
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
       },
     });
   }
   getFollowersByUserId(): void {
     this.isLoading = true;
 
-    this.profile.getFollowersByUserId(this.myInfo.id).subscribe({
+    this.profile.getFollowersByUserId(this.myInfo.id, this.followersPageCount).subscribe({
       next: (res) => {
-        this.followerList = res.followers;
+        this.followerList = [...this.followerList, ...res.followers];
         this.isLoading = false;
-        console.log('this.followerList',this.followerList);
-        
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
       },
     });
   }
 
+  storeUser(user: any) {
+    localStorage.setItem('user_info', JSON.stringify(user));
+  }
+
+  followUser(): void {
+    this.profile.followUser(this.userInfo.id).subscribe({
+      next: (res) => {
+        this.snackbar.open(res.resp, "Close", {
+          duration: 3000,
+          panelClass: ['snackbar-dark'],
+        })
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.snackbar.open(err, "Close", {
+          duration: 3000,
+          panelClass: ['snackbar-dark'],
+        })
+      },
+    });
+  }
 
   unfollowUser(): void {
     this.profile.unfollowUser(this.userInfo.id).subscribe({
       next: (res) => {
-        console.log('res',res);
-        
+
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
       },
     });
+
   }
 
-  storeUser(user:any){
-    console.log('user',user);
-    localStorage.setItem('user_info',JSON.stringify(user));
+  onTweetScroll() {
+    this.tweetsPageCount++;
+    this.getTweetsByUserId();
   }
-
-  // getUsers(): void {
-  //   this.isLoading = true;
-
-  //   this.profile.getAllUsers(this.pageCount).subscribe({
-  //     next: (res) => {
-  //       this.userList = [...this.userList, ...res.users];
-
-  //       this.isLoading = false;
-  //     },
-  //     error: (err) => {
-  //       this.isLoading = false;
-  //       console.log('Error:', err);
-  //     },
-  //   });
-  // }
-
-  // onScroll() {
-  //   this.pageCount++;
-  //   this.getUsers();
-  // }
+  onFollowingScroll() {
+    this.followingsPageCount++;
+    this.getFollowingsByUserId();
+  }
+  onFollowersScroll() {
+    this.followersPageCount++;
+    this.getFollowersByUserId();
+  }
 }

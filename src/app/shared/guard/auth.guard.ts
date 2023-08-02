@@ -17,7 +17,7 @@ export class AuthGuard {
       this.requester.logout();
       this.router.navigate(['/auth/login']);
       this.snackbar.open("You are not permitted to access this resources!", "Close", {
-        duration: 80000
+        duration: 3000
       })
       return false;
     } else {

@@ -26,15 +26,10 @@
           <mat-form-field appearance="outline" class="twitter-form-field">
 
             <input class="w-full" type="email" matInput placeholder="Ex. pat@example.com" formControlName="email" />
-            <!-- <mat-error *ngIf="loginForm.get('email')?.errors?.required">
-              We need an email address to log you in
-            </mat-error> -->
+
             <mat-error *ngIf="loginForm.get('email')?.hasError('pattern')">
               We need a valid email address to log you in
             </mat-error>
-            <!-- <mat-error *ngIf="loginForm.invalid">
-              We need a valid email address to log you in
-            </mat-error> -->
           </mat-form-field>
           <mat-label class="text-[#308DD8]">Password</mat-label>
 
@@ -44,9 +39,6 @@
             <mat-icon class="text-[#308DD8] font-thin" matSuffix (click)="visible = !visible">{{ !visible ?
               "visibility_off" : "visibility" }}
             </mat-icon>
-            <!-- <mat-error *ngIf="loginForm.get('password')?.errors?.required">
-              We need password to log you in
-            </mat-error> -->
           </mat-form-field>
           <button class="login-button mt-6 block w-full" type="submit" [disabled]="!loginForm.valid">
             <div class="flex items-center justify-center">
@@ -56,7 +48,7 @@
           </button>
 
         </form>
-        <button class="login-button mt-6 block w-full" routerLink="/sign-up">
+        <button class="login-button mt-6 block w-full" routerLink="/auth/sign-up">
           <div class="flex items-center justify-center">
             <span>Sign Up</span>
           </div>

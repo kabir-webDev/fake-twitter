@@ -81,3 +81,8 @@ body {
   animation: s3 1s infinite linear;
 }
 @keyframes s3 {to{transform: rotate(1turn)}}
+
+.snackbar-dark {
+  background: #22375b !important;
+  color: white !important;
+}

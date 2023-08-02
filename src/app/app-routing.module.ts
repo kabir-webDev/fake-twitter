@@ -20,11 +20,11 @@ const childrenRoutes: Routes = [
     path: 'my-profile',
     loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
   },
-  // {
-  //   path: '**',
-  //   loadChildren: () =>
-  //     import('./error/error.module').then((m) => m.ErrorModule),
-  // },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./error/error.module').then((m) => m.ErrorModule),
+  },
 ];
 const routes: Routes = [
   {
@@ -38,7 +38,6 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: childrenRoutes,
-    // canActivate: [AuthGuard],
   },
 ];
 

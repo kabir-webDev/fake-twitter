@@ -44,7 +44,6 @@ export class LayoutComponent {
     ){
         this.toolbarService.getToolBarData.pipe(takeWhile(() => this.isAlive)).subscribe(res => {
       this.routeData = res;
-      console.log('this.routeData',res);
       
     })
   }

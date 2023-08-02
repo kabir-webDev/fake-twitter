@@ -7,18 +7,18 @@ const routes: Routes = [
   {
     path: 'login',
     component: SignInComponent,
-    // data: {
-    //   title: 'Login',
-    //   toolbarTitle: 'Login',
-    // }
+    data: {
+      title: 'Login',
+      toolbarTitle: 'Login',
+    }
   },
   {
     path: 'sign-up',
     component: SignUpComponent,
-    // data: {
-    //   title: 'Sign up',
-    //   toolbarTitle: 'Sign up',
-    // }
+    data: {
+      title: 'Sign up',
+      toolbarTitle: 'Sign up',
+    }
   },
   {
     path: '',

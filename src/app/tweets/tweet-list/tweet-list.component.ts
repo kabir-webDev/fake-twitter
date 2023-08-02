@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RequesterService } from 'src/app/shared/services/requester.service';
 import { TweetService } from '../tweet.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-tweet-list',
@@ -14,7 +15,8 @@ export class TweetListComponent implements OnInit {
   isNoMoreData!:boolean;
   constructor(
     private requesterService: RequesterService,
-    private tweetService: TweetService
+    private tweetService: TweetService,
+    private snackbar: MatSnackBar,
   ) { }
   ngOnInit(): void {
     this.getTimeline();
@@ -31,8 +33,6 @@ export class TweetListComponent implements OnInit {
     this.isLoading = true;
     this.tweetService.getTimeline(this.pageCount).subscribe({
       next: (res) => {
-        console.log('New Call:',res.timeline);
-        // this.timelineData = res.timeline;
         if(initial){
           this.timelineData = res.timeline;
         }else{
@@ -43,20 +43,13 @@ export class TweetListComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        console.log('Error:', err);
+        this.snackbar.open(err, "Close", {
+          duration: 3000,
+        })
       },
     });
   }
-
-  getMyTweets(): void {
-    this.tweetService.getMyTweets().subscribe({
-      next: (res) => {
-      },
-      error: (err) => {
-        console.log('Error:', err);
-      },
-    });
-  }
+  
   onScroll() {
     this.pageCount++;
     this.getTimeline();
