@@ -4,7 +4,7 @@ Welcome to the Angular Project! This project is built using the Angular framewor
 
 ## Prerequisites
 
-###Before you begin, ensure you have the following software installed on your machine:
+### Before you begin, ensure you have the following software installed on your machine:
 Node.js (LTS version recommended) - https://nodejs.org
 npm (Node Package Manager) - This is typically included with Node.js installation.
 
