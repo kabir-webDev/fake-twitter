@@ -9,23 +9,36 @@ import { TweetService } from '../tweet.service';
 })
 export class TweetListComponent implements OnInit {
   timelineData: any[] = [];
-  isLoading!:boolean;
+  isLoading!: boolean;
   pageCount: number = 1;
+  isNoMoreData!:boolean;
   constructor(
     private requesterService: RequesterService,
     private tweetService: TweetService
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.getTimeline();
-    // this.getMyTweets();
+    this.tweetService.tweetPosted$.subscribe((tweetPosted) => {
+      if (tweetPosted) {
+        setTimeout(() => {
+          this.getTimeline(true);
+        }, 2000);
+
+      }
+    });
   }
-  getTimeline(): void {
+  getTimeline(initial?:boolean): void {
     this.isLoading = true;
     this.tweetService.getTimeline(this.pageCount).subscribe({
       next: (res) => {
-        console.log(res.timeline);
+        console.log('New Call:',res.timeline);
         // this.timelineData = res.timeline;
-        this.timelineData = [...this.timelineData, ...res.timeline];
+        if(initial){
+          this.timelineData = res.timeline;
+        }else{
+          this.timelineData = [...this.timelineData, ...res.timeline];
+        }
+        this.isNoMoreData = (res.timeline.length>0) ? false : true;
         this.isLoading = false;
       },
       error: (err) => {

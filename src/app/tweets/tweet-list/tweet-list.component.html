@@ -1,9 +1,8 @@
-<div class="max-w-[700px] p-4 my-2">
-    <p>tweet-list works!</p>
-    <!-- <app-tweet-form></app-tweet-form> -->
-    <div *ngIf="!isLoading" class="w-[700px]">
+<div class="!w-full p-4 my-2">
+    <app-tweet-form></app-tweet-form>
+    <div class="!w-full">
         <div class="" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
-            (scrolled)="onScroll()">
+            (scrolled)="onScroll()" >
             <div class="w-full p-4 my-2 hover:bg-gray-100 cursor-pointer rounded-lg" *ngFor="let tweet of timelineData">
                 <div class="flex justify-between items-center ">
                     <div class="flex gap-5">
@@ -21,6 +20,7 @@
                 <div class="ml-14 text-sm text-slate-600">{{tweet.content}}</div>
             </div>
         </div>
+        <p class="text-center pt-5 text-lg text-gray-500">{{isNoMoreData? 'No More Data!' : ''}}</p>
     </div>
     <div class=" flex justify-center pt-10">
         <div class="spinner" *ngIf="isLoading"></div>

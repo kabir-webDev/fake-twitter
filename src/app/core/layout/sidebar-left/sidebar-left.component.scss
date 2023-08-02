@@ -4,3 +4,33 @@
     object-fit: cover;
     border-radius: 50%;
   }
+  .mobile-menu {
+    display: none; /* Hide the mobile menu by default */
+    position: fixed;
+    top: 68px; /* Adjust the top position as needed */
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.5s ease; /* Add transition for the transform property */
+    transform: translateY(-100%); 
+  }
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%); /* Start position, above the top */
+    }
+    to {
+      transform: translateY(0); /* End position, slide down to top */
+    }
+  }
+  
+  .mobile-menu.active {
+    display: block; /* Show the mobile menu when active */
+    transform: translateY(0);
+    
+  }
+  .mobile-menu:not(.active) {
+    /* Hide the menu off the screen when not active */
+    transform: translateY(-100%);
+  }

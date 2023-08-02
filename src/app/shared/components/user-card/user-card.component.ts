@@ -28,12 +28,25 @@ export class UserCardComponent {
     console.log('user', user);
     localStorage.setItem('user_info', JSON.stringify(user));
   }
+  followUser(): void {
+    this.profile.followUser(this.user.id).subscribe({
+      next: (res) => {
+        this.snackbar.open(res.resp, "Close", {
+          duration: 3000
+        })
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.log('Error:', err);
+      },
+    });
+  }
   unfollowUser(): void {
     this.profile.unfollowUser(this.user.id).subscribe({
       next: (res) => {
-        console.log('res', res);
         this.snackbar.open(res.resp, "Close", {
-          duration: 4000
+          duration: 3000
         })
 
       },

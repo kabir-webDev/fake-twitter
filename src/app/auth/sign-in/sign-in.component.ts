@@ -21,7 +21,7 @@ export class SignInComponent {
   constructor(private formBuilder: FormBuilder, private loginService: AuthService,private requester: RequesterService, private router: Router) {
 
     if (this.requester.isAuthenticated) {
-      this.router.navigate(['/tweets']);
+      this.router.navigate(['/timeline']);
     }
 
     this.loginForm = this.formBuilder.group({
@@ -46,7 +46,7 @@ export class SignInComponent {
       .subscribe(
         (response) => {
           this.isLoading = false;
-          this.router.navigate(['/tweets']);
+          this.router.navigate(['/timeline']);
         },
         (error) => {
           this.isLoading = false;

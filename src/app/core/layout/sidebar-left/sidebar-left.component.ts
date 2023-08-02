@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { RequesterService } from 'src/app/shared/services/requester.service';
 
@@ -73,6 +73,18 @@ export class SidebarLeftComponent {
       name: 'More'
     },
   ]
+
+  isScrolled = false;
+  isMenuOpen = false; // Add this property
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 0;
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   logout():void{
     this.requester.logout();

@@ -92,6 +92,21 @@ export class UserDetailsComponent implements OnInit {
     localStorage.setItem('user_info', JSON.stringify(user));
   }
 
+  followUser(): void {
+    this.userService.followUser(this.userInfo.id).subscribe({
+      next: (res) => {
+        this.snackbar.open(res.resp, "Close", {
+          duration: 3000
+        })
+
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.log('Error:', err);
+      },
+    });
+  }
+
   unfollowUser(): void {
     this.userService.unfollowUser(this.userInfo.id).subscribe({
       next: (res) => {

@@ -1,4 +1,4 @@
-<div class="flex">
+<!-- <div class="flex">
     <div class="w-1/3 h-full flex justify-end border-r">
         <app-sidebar-left class="fixed"></app-sidebar-left>
     </div>
@@ -9,4 +9,53 @@
     <div class="w-1/3 flex justify-start border-l">
         <app-sidebar-right></app-sidebar-right>
     </div>
+</div> -->
+
+<!-- <div class="flex lg:justify-between">
+    <div class="lg:w-1/3 border-r hidden lg:flex lg:justify-end" id="left-sidebar">
+      <app-sidebar-left class="fixed"></app-sidebar-left>
+    </div>
+  
+    <button class="lg:hidden" id="avatar">
+      <img src="path_to_your_avatar_image" alt="Avatar">
+    </button>
+  
+    <div class="min-w-[750px] min-h-[100vh] flex justify-center border-x-[2px]" id="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  
+    <div class="lg:w-1/3 border-l lg:block hidden" id="right-sidebar">
+      <app-sidebar-right></app-sidebar-right>
+    </div>
+  </div>
+  
+  <button class="lg:hidden" id="close">
+    <img src="path_to_your_close_icon_image" alt="Close">
+  </button>
+   -->
+<div class="fixed bg-green-200 flex justify-around items-center w-full h-[100px] z-50">
+    <div class=" flex justify-around items-center w-full" *ngFor="let item of sidebarList"  >
+        <div>
+            <mat-icon [routerlink]="item.link">{{item.icon}}</mat-icon>
+        </div>
+    </div>
 </div>
+
+
+<div class="flex relative">
+    <div class="hidden w-1/3 h-full lg:flex lg:justify-end border-r">
+        <app-sidebar-left class="sticky top-0"></app-sidebar-left>
+    </div>
+    <div class="min-w-[700px] mt-[100px] lg-mt-0 min-h-[100vh] px-auto border-x-[2px]">
+        <router-outlet></router-outlet>
+    </div>
+
+    <div class="hidden w-1/3 lg:flex lg:justify-start border-l">
+        <app-sidebar-right></app-sidebar-right>
+    </div>
+</div>
+<!-- <div class=" bottom-0 bg-green-200  w-full">
+    <div class="!w-full py-10" *ngFor="let item of sidebarList">
+        <mat-icon class="!w-full !h-full">{{item.icon}}</mat-icon>
+    </div>
+</div> -->

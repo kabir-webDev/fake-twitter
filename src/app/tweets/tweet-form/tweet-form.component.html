@@ -1,6 +1,13 @@
-<div>
-    <h2>Angular POST Request Example</h2>
-    <input type="text" [(ngModel)]="content" placeholder="Enter content">
-    <button (click)="postData()" class="p-4 border">Send POST Request</button>
-  </div>
-  
+<!-- <div>
+  <h2>Angular POST Request Example</h2>
+  <input type="text" [(ngModel)]="content" placeholder="Enter content">
+  <button (click)="postData()" class="p-4 border">Send POST Request</button>
+</div> -->
+
+<div class="tweet-container">
+  <textarea
+    placeholder="What's happening?"
+    [(ngModel)]="tweetText"
+  ></textarea>
+  <button class="tweet-button" (click)="onPostTweet()">Tweet</button>
+</div>

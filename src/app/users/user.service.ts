@@ -41,6 +41,12 @@ export class UserService {
     // let queryParam = {page, size:30}
     return this.httpService.get('users/'+id+'/followers');
   }
+  followUser(id:number): Observable<any> {
+    const payload = {
+      user_id: id
+    }
+    return this.httpService.post('follow', payload);
+  }
   unfollowUser(id:number): Observable<any> {
     const payload = {
       user_id: id

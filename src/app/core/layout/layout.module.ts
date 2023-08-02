@@ -5,11 +5,13 @@ import { SidebarRightComponent } from './sidebar-right/sidebar-right.component';
 import { LayoutComponent } from './layout.component';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
   declarations: [SidebarLeftComponent, SidebarRightComponent, LayoutComponent],
-  imports: [CommonModule, RouterModule,MatIconModule,MatMenuModule], exports: [LayoutComponent, SidebarLeftComponent, SidebarRightComponent],
+  imports: [CommonModule, RouterModule, MatIconModule, MatMenuModule, MatSidenavModule],
+  exports: [LayoutComponent, SidebarLeftComponent, SidebarRightComponent],
 })
-export class LayoutModule {}
+export class LayoutModule { }
