@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((data: any) => {
         this.titleService.setTitle(
-          data?.title ? `${data?.title} | Fake Twitter` : 'X'
+          data?.title ? `${data?.title} | Fake Twitter` : 'Fake Twitter'
         );
         this.toolbarService.changeToolBarData({
           toolbarTitle: data?.toolbarTitle || '',
