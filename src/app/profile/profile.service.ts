@@ -7,7 +7,8 @@ import { Observable, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ProfileService {
+
 
   baseUrl: string = environment.v1Endpoint;
 

@@ -50,7 +50,8 @@
           </mat-form-field>
           <button class="login-button mt-6 block w-full" type="submit" [disabled]="!loginForm.valid">
             <div class="flex items-center justify-center">
-              <span>LOGIN</span>
+              <span *ngIf="!isLoading">LOGIN</span>
+              <div class="loader" *ngIf="isLoading" ></div>
             </div>
           </button>
 

@@ -11,6 +11,7 @@ import { SearchService } from '../../services/search.service';
 export class SearchComponent implements OnInit {
   currentUserData: any;
   isFocused!: boolean;
+  isLoading!: boolean;
   userList = [];
   constructor(
     private requesterService: RequesterService,
@@ -29,35 +30,46 @@ export class SearchComponent implements OnInit {
 
   onInputChange() {
     if (this.searchQuery.length > 2) {
+      this.isLoading = true;
       this.searchUserService.searchUser({ token: this.searchQuery }).subscribe({
         next: (res) => {
           console.log('Search Response:', res);
-          this.userList = res.users;
+          this.userList = res.search_results;
+          this.isLoading = false;
         },
         error: (err) => {
+          this.isLoading = false;
           console.log('Error:', err);
         },
       });
+    }else{
+      this.userList = [];
     }
   }
 
   onSearch() {
     if (this.searchQuery.length > 2) {
+      this.isLoading = true;
       this.searchUserService.searchUser({ token: this.searchQuery }).subscribe({
         next: (res) => {
           console.log('Search Response:', res);
-          this.userList = res.users;
+          this.userList = res.search_results;
+          this.isLoading = false;
         },
         error: (err) => {
+          this.isLoading = false;
           console.log('Error:', err);
         },
       });
+    }else{
+      this.userList = [];
     }
   }
 
   onClear() {
     console.log('Searching for:', this.searchQuery);
     this.searchQuery = '';
+    this.userList = [];
   }
 
   onBlur() {

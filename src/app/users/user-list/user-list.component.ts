@@ -9,7 +9,7 @@ import { UserService } from '../user.service';
 })
 export class UserListComponent implements OnInit {
   currentUserData: any;
-  pageCount: number = 0;
+  pageCount: number = 1;
   isLoading!: boolean;
   userList: any[] = []; // Initialize userList as an empty array
   constructor(

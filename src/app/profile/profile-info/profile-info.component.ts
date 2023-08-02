@@ -1,34 +1,43 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../user.service';
+import { ProfileService } from '../profile.service';
+import jwtDecode from 'jwt-decode';
 
 @Component({
-  selector: 'app-user-details',
-  templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss'],
+  selector: 'app-profile-info',
+  templateUrl: './profile-info.component.html',
+  styleUrls: ['./profile-info.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class UserDetailsComponent implements OnInit {
+export class ProfileInfoComponent  implements OnInit {
   userId!: number;
   currentUserData: any;
   pageCount: number = 0;
   isLoading!: boolean;
   userList: any[] = [];
   userInfo!: any;
-  tweetList: any[] = [];
-  followingList: any[] = [];
-  followerList: any[] = [];
+  tweetList: any[] =[];
+  followingList: any[] =[];
+  followerList: any[] =[];
+  myInfo: any;
   constructor(
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private userService: UserService
+    private profile: ProfileService
   ) {
     this.userId = this.route.snapshot.params['id'];
     const storedData = localStorage.getItem('user_info');
     if (storedData) {
       this.userInfo = JSON.parse(storedData);
     }
+    const myData = localStorage.getItem('access_token');
+    if (myData) {
+      this.myInfo = jwtDecode(myData);
+    }
+    console.log('this.myInfo',this.myInfo.id);
+    
+    
 
   }
 
@@ -43,7 +52,7 @@ export class UserDetailsComponent implements OnInit {
   getTweetsByUserId(): void {
     this.isLoading = true;
 
-    this.userService.getTweetsByUserId(this.userId).subscribe({
+    this.profile.getTweetsByUserId(this.myInfo.id).subscribe({
       next: (res) => {
         this.tweetList = res.tweets;
         this.isLoading = false;
@@ -57,12 +66,12 @@ export class UserDetailsComponent implements OnInit {
   getFollowingsByUserId(): void {
     this.isLoading = true;
 
-    this.userService.getFollowingsByUserId(this.userId).subscribe({
+    this.profile.getFollowingsByUserId(this.myInfo.id).subscribe({
       next: (res) => {
         this.followingList = res.followings;
         this.isLoading = false;
-        console.log('this.followingList', this.followingList);
-
+        console.log('this.followingList',this.followingList);
+        
       },
       error: (err) => {
         this.isLoading = false;
@@ -73,12 +82,12 @@ export class UserDetailsComponent implements OnInit {
   getFollowersByUserId(): void {
     this.isLoading = true;
 
-    this.userService.getFollowersByUserId(this.userId).subscribe({
+    this.profile.getFollowersByUserId(this.myInfo.id).subscribe({
       next: (res) => {
         this.followerList = res.followers;
         this.isLoading = false;
-        console.log('this.followerList', this.followerList);
-
+        console.log('this.followerList',this.followerList);
+        
       },
       error: (err) => {
         this.isLoading = false;
@@ -87,13 +96,9 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  storeUser(user: any) {
-    console.log('user', user);
-    localStorage.setItem('user_info', JSON.stringify(user));
-  }
 
   unfollowUser(): void {
-    this.userService.unfollowUser(this.userInfo.id).subscribe({
+    this.profile.unfollowUser(this.userInfo.id).subscribe({
       next: (res) => {
         console.log('res',res);
         
@@ -103,13 +108,17 @@ export class UserDetailsComponent implements OnInit {
         console.log('Error:', err);
       },
     });
+  }
 
+  storeUser(user:any){
+    console.log('user',user);
+    localStorage.setItem('user_info',JSON.stringify(user));
   }
 
   // getUsers(): void {
   //   this.isLoading = true;
 
-  //   this.userService.getAllUsers(this.pageCount).subscribe({
+  //   this.profile.getAllUsers(this.pageCount).subscribe({
   //     next: (res) => {
   //       this.userList = [...this.userList, ...res.users];
 

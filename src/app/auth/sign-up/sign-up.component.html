@@ -76,13 +76,8 @@
           </mat-form-field>
           <button class="login-button mt-6 block w-full" type="submit" [disabled]="!loginForm.valid">
             <div class="flex items-center justify-center">
-              <span>SIGN UP</span>
-              <ng-template #progressbar>
-                <div class="w-52 mx-auto p-3">
-                  <mat-progress-bar class="ft-progress-bar" mode="indeterminate">
-                  </mat-progress-bar>
-                </div>
-              </ng-template>
+              <span *ngIf="!isLoading">SIGN UP</span>
+              <div class="loader" *ngIf="isLoading" ></div>
             </div>
           </button>
 

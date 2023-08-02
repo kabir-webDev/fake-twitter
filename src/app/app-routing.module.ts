@@ -6,15 +6,19 @@ const childrenRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/tweets',
+    redirectTo: '/timeline',
   },
   {
-    path: 'tweets',
+    path: 'timeline',
     loadChildren: () => import('./tweets/tweets.module').then((m) => m.TweetsModule),
   },
   {
     path: 'users',
     loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+  },
+  {
+    path: 'my-profile',
+    loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
   },
   // {
   //   path: '**',

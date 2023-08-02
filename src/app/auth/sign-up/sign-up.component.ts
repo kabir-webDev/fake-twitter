@@ -12,6 +12,7 @@ export class SignUpComponent {
   loginForm: FormGroup; // Declare loginForm as FormGroup
   submitted = false;
   visible: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,6 +32,7 @@ export class SignUpComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.isLoading = true;
 
     if (this.loginForm.invalid) {
       return;
@@ -44,9 +46,11 @@ export class SignUpComponent {
       .signup(payload)
       .subscribe(
         (response) => {
+          this.isLoading = false;
           this.router.navigate(['/auth/login']);
         },
         (error) => {
+          this.isLoading = false;
           console.error('Signup failed:', error);
         }
       );

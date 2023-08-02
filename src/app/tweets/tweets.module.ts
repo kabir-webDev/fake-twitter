@@ -5,6 +5,7 @@ import { TweetsRoutingModule } from './tweets-routing.module';
 import { TweetListComponent } from './tweet-list/tweet-list.component';
 import { TweetFormComponent } from './tweet-form/tweet-form.component';
 import { FormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     TweetsRoutingModule,
-    FormsModule
+    FormsModule,
+    InfiniteScrollModule
   ],
   
 })

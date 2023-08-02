@@ -1,0 +1,16 @@
+<div class="flex justify-between items-center ">
+    <div class="flex gap-5">
+        <div><img src="https://img.freepik.com/free-icon/user_318-159711.jpg" alt="" width="35" height="35">
+        </div>
+        <div>
+            <p class="font-medium">{{ user.username.length > 25 ? user.username.slice(0, 25) + '...' : user.username |
+                uppercase}}<span class="font-normal text-sm text-green-500">({{user.active&&'active'}})</span></p>
+            <p class="font-light text-slate-600 mt-[-2px]">@{{user.username}}</p>
+        </div>
+    </div>
+    <button class="bg-[#272C30] px-4 py-1 rounded-full font-medium text-white" *ngIf="tab==='following' && isMyProfile"
+        (click)="unfollowUser()">unfollow</button>
+    <button class="bg-[#272C30] px-4 py-1 rounded-full font-medium text-white" *ngIf="tab==='followers'">follow</button>
+</div>
+<div class="ml-14 text-sm text-slate-600">Email: {{user.email}} <br> Joined: {{ user.join_date | date
+    : "h:mm a, d MMM y" }} </div>

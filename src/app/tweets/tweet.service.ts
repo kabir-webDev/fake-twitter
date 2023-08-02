@@ -21,6 +21,12 @@ export class TweetService {
     return throwError(`${error.error.message}`);
   }
 
+  getTimeline(page:number): Observable<any> {
+    // return this.http.get(this.baseUrl + 'users?page=5&size=30')
+    let queryParam = {page, size:30}
+    return this.httpService.get('timeline',queryParam);
+  }
+
   getMyTweets(): Observable<any> {
     // return this.http.get(this.baseUrl + 'users?page=5&size=30')
     return this.httpService.get('my-tweets','');

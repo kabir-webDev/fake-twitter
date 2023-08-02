@@ -14,8 +14,8 @@ export class SignInComponent {
   submitted = false;
   visible: boolean = false;
   inputType: any = 'password';
-  isSubmitting: boolean = false;
-  isSubmittingSso: boolean = false;
+  isLoading: boolean = false;
+  isLoadingSso: boolean = false;
   errMessage!: string;
 
   constructor(private formBuilder: FormBuilder, private loginService: AuthService,private requester: RequesterService, private router: Router) {
@@ -36,7 +36,7 @@ export class SignInComponent {
 
   onSubmit() {
     this.submitted = true;
-    this.isSubmitting = true;
+    this.isLoading = true;
     
     if (this.loginForm.invalid) {
       return;
@@ -45,17 +45,14 @@ export class SignInComponent {
     this.loginService.login({email: this.loginForm.value.email, password: this.loginForm.value.password})
       .subscribe(
         (response) => {
-          this.isSubmitting = false;
+          this.isLoading = false;
           this.router.navigate(['/tweets']);
         },
         (error) => {
+          this.isLoading = false;
           console.error('Login failed:', error);
         }
       );
-  }
-
-  submitForm(nextPage = '/jobs'): void {
-    this.isSubmitting = true;
   }
 
   toggleVisibility() {

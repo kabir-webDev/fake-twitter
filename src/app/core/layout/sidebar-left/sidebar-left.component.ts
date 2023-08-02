@@ -64,7 +64,7 @@ export class SidebarLeftComponent {
     },
     {
       icon: 'person',
-      link: '/',
+      link: '/my-profile',
       name: 'Profile'
     },
     {
